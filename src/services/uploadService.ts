@@ -43,7 +43,7 @@ export async function uploadImage(
   if (onProgress) onProgress(20);
 
   try {
-    const response = await fetch('/api/upload/image', {
+    const response = await apiFetch('/api/upload/image', {
       method: 'POST',
       body: formData,
     });
@@ -73,7 +73,7 @@ export async function deleteImage(publicId: string): Promise<boolean> {
   if (!publicId) return true;
 
   try {
-    const response = await fetch('/api/upload/image', {
+    const response = await apiFetch('/api/upload/image', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -88,3 +88,4 @@ export async function deleteImage(publicId: string): Promise<boolean> {
     return false;
   }
 }
+import { apiFetch } from '../utils/apiFetch';

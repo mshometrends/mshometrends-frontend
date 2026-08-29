@@ -1,0 +1,51 @@
+# MS Home Trends - Robots.txt
+# Optimized for Search Engines (SEO), Answer Engines (AEO), and Generative Search (GEO)
+
+User-agent: *
+Allow: /
+Allow: /products
+Allow: /category/
+Allow: /product/
+Allow: /about
+Allow: /contact
+Allow: /faq
+Allow: /shipping
+Allow: /track-order
+Disallow: /MS/admin/
+Disallow: /admin/
+Disallow: /api/
+Disallow: /cart
+Disallow: /checkout
+Disallow: /invoice/
+Disallow: /profile
+
+# AI Answer Engines & Generative Search Bots (Explicitly Allowed for AEO & GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Sitemaps
+Sitemap: https://mshometrends.com/sitemap.xml

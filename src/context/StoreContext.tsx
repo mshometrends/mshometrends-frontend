@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import {
   Product,
   Category,
@@ -309,7 +310,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const fetchRegisteredUsers = async () => {
     try {
-      const res = await fetch('/api/v1/users');
+      const res = await apiFetch('/api/v1/users');
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
         setRegisteredUsers(json.data);
@@ -321,7 +322,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const loginUser = async (email: string, pass: string): Promise<{ success: boolean; message: string }> => {
     try {
-      const res = await fetch('/api/v1/users/login', {
+      const res = await apiFetch('/api/v1/users/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: pass }),
@@ -350,7 +351,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     pass: string
   ): Promise<{ success: boolean; message: string }> => {
     try {
-      const res = await fetch('/api/v1/users/register', {
+      const res = await apiFetch('/api/v1/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, phone, password: pass }),
@@ -383,7 +384,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteUser = async (id: string) => {
     try {
-      const res = await fetch(`/api/v1/users/${id}`, { method: 'DELETE' });
+      const res = await apiFetch(`/api/v1/users/${id}`, { method: 'DELETE' });
       const json = await res.json();
       if (json.success) {
         showToast('User deleted successfully.', 'info');
@@ -517,14 +518,14 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const fetchInitialData = async () => {
       try {
         const [catRes, prodRes, revRes, coupRes, ordRes, shipRes, banRes, offRes] = await Promise.all([
-          fetch('/api/v1/categories'),
-          fetch('/api/v1/products'),
-          fetch('/api/v1/reviews'),
-          fetch('/api/v1/coupons'),
-          fetch('/api/v1/orders'),
-          fetch('/api/v1/shipping-rules'),
-          fetch('/api/v1/banners'),
-          fetch('/api/v1/offers'),
+          apiFetch('/api/v1/categories'),
+          apiFetch('/api/v1/products'),
+          apiFetch('/api/v1/reviews'),
+          apiFetch('/api/v1/coupons'),
+          apiFetch('/api/v1/orders'),
+          apiFetch('/api/v1/shipping-rules'),
+          apiFetch('/api/v1/banners'),
+          apiFetch('/api/v1/offers'),
         ]);
 
         if (catRes.ok) {
@@ -860,7 +861,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Admin Functions
   const addProduct = async (newProduct: Omit<Product, 'id' | 'createdAt'>) => {
     try {
-      const res = await fetch('/api/v1/products', {
+      const res = await apiFetch('/api/v1/products', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newProduct),
@@ -899,7 +900,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const updateProduct = async (updated: Product) => {
     try {
-      const res = await fetch(`/api/v1/products/${updated.id}`, {
+      const res = await apiFetch(`/api/v1/products/${updated.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated),
@@ -941,7 +942,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     );
 
     try {
-      const res = await fetch(`/api/v1/products/${id}/feature`, {
+      const res = await apiFetch(`/api/v1/products/${id}/feature`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ featured: nextFeaturedState }),
@@ -981,7 +982,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     );
 
     try {
-      await fetch(`/api/v1/products/${id}`, {
+      await apiFetch(`/api/v1/products/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...targetProduct, isBestSeller: nextState }),
@@ -1008,7 +1009,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     );
 
     try {
-      await fetch(`/api/v1/products/${id}`, {
+      await apiFetch(`/api/v1/products/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...targetProduct, isNewArrival: nextState }),
@@ -1025,7 +1026,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteProduct = async (id: string) => {
     try {
-      await fetch(`/api/v1/products/${id}`, {
+      await apiFetch(`/api/v1/products/${id}`, {
         method: 'DELETE',
       });
     } catch (err) {
@@ -1037,7 +1038,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const addCategory = async (newCat: Omit<Category, 'id' | 'itemCount'>) => {
     try {
-      const res = await fetch('/api/v1/categories', {
+      const res = await apiFetch('/api/v1/categories', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newCat),
@@ -1068,7 +1069,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const updateCategory = async (updated: Category) => {
     const catId = updated.id || (updated as any)._id;
     try {
-      const res = await fetch(`/api/v1/categories/${catId}`, {
+      const res = await apiFetch(`/api/v1/categories/${catId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated),
@@ -1099,7 +1100,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteCategory = async (id: string) => {
     try {
-      await fetch(`/api/v1/categories/${id}`, { method: 'DELETE' });
+      await apiFetch(`/api/v1/categories/${id}`, { method: 'DELETE' });
       setCategories((prev) => prev.filter((c) => c.id !== id && (c as any)._id !== id));
       showToast('Category deleted from MongoDB Atlas', 'info');
     } catch (err) {
@@ -1118,7 +1119,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const toggleBanner = async (id: string) => {
     try {
-      await fetch(`/api/v1/banners/${id}/toggle`, { method: 'PUT' });
+      await apiFetch(`/api/v1/banners/${id}/toggle`, { method: 'PUT' });
       setBanners((prev) =>
         prev.map((b) => (b.id === id || b._id === id ? { ...b, active: !b.active } : b))
       );
@@ -1134,7 +1135,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const addBanner = async (newBanner: Omit<Banner, 'id'>) => {
     try {
-      const res = await fetch('/api/v1/banners', {
+      const res = await apiFetch('/api/v1/banners', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newBanner),
@@ -1168,7 +1169,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const updateBanner = async (updated: Banner) => {
     const bannerId = updated.id || updated._id;
     try {
-      const res = await fetch(`/api/v1/banners/${bannerId}`, {
+      const res = await apiFetch(`/api/v1/banners/${bannerId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated),
@@ -1201,7 +1202,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteBanner = async (id: string) => {
     try {
-      await fetch(`/api/v1/banners/${id}`, { method: 'DELETE' });
+      await apiFetch(`/api/v1/banners/${id}`, { method: 'DELETE' });
       setBanners((prev) => prev.filter((b) => b.id !== id && b._id !== id));
       showToast('Hero banner deleted successfully!', 'info');
     } catch (err) {
@@ -1213,7 +1214,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const fetchOffers = async () => {
     try {
-      const res = await fetch('/api/v1/offers');
+      const res = await apiFetch('/api/v1/offers');
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
         const mapped = json.data.map((o: any) => ({ ...o, id: o._id || o.id }));
@@ -1226,7 +1227,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const toggleOffer = async (id: string) => {
     try {
-      await fetch(`/api/v1/offers/${id}/toggle`, { method: 'PUT' });
+      await apiFetch(`/api/v1/offers/${id}/toggle`, { method: 'PUT' });
       setOffers((prev) =>
         prev.map((o) => (o.id === id || o._id === id ? { ...o, active: !o.active } : o))
       );
@@ -1242,7 +1243,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const addOffer = async (newOffer: Omit<Offer, 'id' | '_id'>) => {
     try {
-      const res = await fetch('/api/v1/offers', {
+      const res = await apiFetch('/api/v1/offers', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newOffer),
@@ -1274,7 +1275,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const updateOffer = async (updated: Offer) => {
     const offerId = updated.id || updated._id;
     try {
-      const res = await fetch(`/api/v1/offers/${offerId}`, {
+      const res = await apiFetch(`/api/v1/offers/${offerId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updated),
@@ -1305,7 +1306,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteOffer = async (id: string) => {
     try {
-      await fetch(`/api/v1/offers/${id}`, { method: 'DELETE' });
+      await apiFetch(`/api/v1/offers/${id}`, { method: 'DELETE' });
       setOffers((prev) => prev.filter((o) => o.id !== id && o._id !== id));
       showToast('Offer deleted successfully!', 'info');
     } catch (err) {
@@ -1317,7 +1318,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const addCoupon = async (newCoupon: Omit<Coupon, 'id'>) => {
     try {
-      const res = await fetch('/api/v1/coupons', {
+      const res = await apiFetch('/api/v1/coupons', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newCoupon),
@@ -1350,7 +1351,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const addReview = async (newRev: Omit<Review, 'id' | 'date' | 'verifiedPurchase'>) => {
     try {
-      const res = await fetch('/api/v1/reviews', {
+      const res = await apiFetch('/api/v1/reviews', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...newRev, approved: false }),
@@ -1387,7 +1388,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const approveReview = async (reviewId: string) => {
     try {
-      const res = await fetch(`/api/v1/reviews/${reviewId}/approve`, {
+      const res = await apiFetch(`/api/v1/reviews/${reviewId}/approve`, {
         method: 'PUT',
       });
       const json = await res.json();
@@ -1414,7 +1415,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteReview = async (reviewId: string) => {
     try {
-      await fetch(`/api/v1/reviews/${reviewId}`, { method: 'DELETE' });
+      await apiFetch(`/api/v1/reviews/${reviewId}`, { method: 'DELETE' });
       setReviews((prev) => prev.filter((r) => r.id !== reviewId && r._id !== reviewId));
       showToast('Review removed/rejected', 'info');
     } catch (err) {
@@ -1473,7 +1474,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     };
 
     // Save to MongoDB API in background
-    fetch('/api/v1/orders', {
+    apiFetch('/api/v1/orders', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1512,7 +1513,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const fetchShippingRules = async () => {
     try {
-      const res = await fetch('/api/v1/shipping-rules');
+      const res = await apiFetch('/api/v1/shipping-rules');
       const json = await res.json();
       if (json.success && Array.isArray(json.data)) {
         const mapped = json.data.map((sr: any) => ({ ...sr, id: sr._id || sr.id }));
@@ -1525,7 +1526,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const addShippingRule = async (rule: Omit<ShippingRule, 'id' | '_id'>) => {
     try {
-      const res = await fetch('/api/v1/shipping-rules', {
+      const res = await apiFetch('/api/v1/shipping-rules', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(rule),
@@ -1548,7 +1549,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deleteShippingRule = async (id: string) => {
     try {
-      await fetch(`/api/v1/shipping-rules/${id}`, { method: 'DELETE' });
+      await apiFetch(`/api/v1/shipping-rules/${id}`, { method: 'DELETE' });
       setShippingRules((prev) => prev.filter((r) => r.id !== id && r._id !== id));
       showToast('Shipping rule deleted', 'info');
     } catch (err) {
@@ -1559,7 +1560,7 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const calculateShippingFee = async (country: string, city: string, zipCode: string) => {
     try {
-      const res = await fetch('/api/v1/shipping-rules/calculate', {
+      const res = await apiFetch('/api/v1/shipping-rules/calculate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ country, city, zipCode }),

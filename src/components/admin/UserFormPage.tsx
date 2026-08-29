@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../../utils/apiFetch';
 import { useStore } from '../../context/StoreContext';
 import { User as UserType } from '../../types';
 import { AdminFormLayout } from './AdminFormLayout';
@@ -43,7 +44,7 @@ export const UserFormPage: React.FC<UserFormPageProps> = ({ userToEdit, onClose 
     setIsSubmitting(true);
     try {
       // Direct registration API
-      const res = await fetch('/api/v1/users/register', {
+      const res = await apiFetch('/api/v1/users/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

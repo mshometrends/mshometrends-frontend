@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import {
@@ -48,7 +49,7 @@ export const OrderSuccessPage: React.FC = () => {
     if (!orderId) return;
     try {
       setLoading(true);
-      const res = await fetch(`/api/orders/${orderId}`);
+      const res = await apiFetch(`/api/orders/${orderId}`);
       const json = await res.json();
       if (json.success && json.data) {
         setOrder(json.data);
@@ -100,7 +101,7 @@ export const OrderSuccessPage: React.FC = () => {
         formData.append('transactionReference', transRef);
       }
 
-      const res = await fetch(`/api/orders/${orderId}/payment-screenshot`, {
+      const res = await apiFetch(`/api/orders/${orderId}/payment-screenshot`, {
         method: 'POST',
         body: formData,
       });

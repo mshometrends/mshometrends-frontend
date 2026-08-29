@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import {
   Search,
   Filter,
@@ -76,7 +77,7 @@ export const AdminOrdersView: React.FC = () => {
         queryParams.append('search', searchQuery.trim());
       }
 
-      const res = await fetch(`/api/admin/orders?${queryParams.toString()}`);
+      const res = await apiFetch(`/api/admin/orders?${queryParams.toString()}`);
       const json = await res.json();
 
       if (json.success) {
@@ -108,7 +109,7 @@ export const AdminOrdersView: React.FC = () => {
       setActionLoading(true);
       setActionMessage(null);
 
-      const res = await fetch(`/api/admin/orders/${orderId}/confirm-payment`, {
+      const res = await apiFetch(`/api/admin/orders/${orderId}/confirm-payment`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ verifiedBy: 'Admin', adminNote }),
@@ -142,7 +143,7 @@ export const AdminOrdersView: React.FC = () => {
       setActionLoading(true);
       setActionMessage(null);
 
-      const res = await fetch(`/api/admin/orders/${orderId}/reject-payment`, {
+      const res = await apiFetch(`/api/admin/orders/${orderId}/reject-payment`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rejectionReason, adminNote }),
@@ -173,7 +174,7 @@ export const AdminOrdersView: React.FC = () => {
       setActionLoading(true);
       setActionMessage(null);
 
-      const res = await fetch(`/api/admin/orders/${orderId}/status`, {
+      const res = await apiFetch(`/api/admin/orders/${orderId}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orderStatus: newStatus, adminNote }),

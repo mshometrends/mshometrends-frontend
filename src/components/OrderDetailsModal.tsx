@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   X,
@@ -102,14 +103,14 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
   const fetchOrderFromDatabase = async (id: string) => {
     try {
       setLoading(true);
-      const res = await fetch(`/api/v1/orders/${id}`);
+      const res = await apiFetch(`/api/v1/orders/${id}`);
       const json = await res.json();
 
       if (json.success && json.data) {
         setOrder(json.data);
       } else if (!order) {
         // Fallback: try track search endpoint
-        const searchRes = await fetch(`/api/v1/orders/track/${encodeURIComponent(id)}`);
+        const searchRes = await apiFetch(`/api/v1/orders/track/${encodeURIComponent(id)}`);
         const searchJson = await searchRes.json();
         if (searchJson.success && Array.isArray(searchJson.data) && searchJson.data.length > 0) {
           setOrder(searchJson.data[0]);
@@ -142,7 +143,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = ({
 
     try {
       setCancelling(true);
-      const res = await fetch(`/api/v1/orders/${rawId}/status`, {
+      const res = await apiFetch(`/api/v1/orders/${rawId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'Cancelled' }),

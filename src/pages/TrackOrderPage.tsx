@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { SEOHead } from '../components/SEOHead';
@@ -47,7 +48,7 @@ export const TrackOrderPage: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`/api/orders/track/${encodeURIComponent(queryToSearch.trim())}`);
+      const res = await apiFetch(`/api/orders/track/${encodeURIComponent(queryToSearch.trim())}`);
       const json = await res.json();
 
       if (json.success && json.data && json.data.length > 0) {
@@ -88,7 +89,7 @@ export const TrackOrderPage: React.FC = () => {
       const formData = new FormData();
       formData.append('screenshot', selectedFile);
 
-      const res = await fetch(`/api/orders/${activeUploadOrder.orderId}/payment-screenshot`, {
+      const res = await apiFetch(`/api/orders/${activeUploadOrder.orderId}/payment-screenshot`, {
         method: 'POST',
         body: formData,
       });

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Printer, Download, MessageSquare, ArrowLeft, Building2, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { downloadOrderPDF, shareOrOpenWhatsAppWithPDF } from '../utils/pdfInvoice';
@@ -17,13 +18,13 @@ export const InvoicePage: React.FC = () => {
       if (!orderId) return;
       try {
         setLoading(true);
-        const res = await fetch(`/api/orders/${orderId}/invoice`);
+        const res = await apiFetch(`/api/orders/${orderId}/invoice`);
         const json = await res.json();
         if (json.success && json.data?.order) {
           setOrder(json.data.order);
         } else {
           // Fallback search
-          const res2 = await fetch(`/api/orders/${orderId}`);
+          const res2 = await apiFetch(`/api/orders/${orderId}`);
           const json2 = await res2.json();
           if (json2.success && json2.data) {
             setOrder(json2.data);
@@ -306,4 +307,3 @@ export const InvoicePage: React.FC = () => {
     </div>
   );
 };
-

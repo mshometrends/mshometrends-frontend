@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import { useStore } from '../context/StoreContext';
 import {
   User,
@@ -111,7 +112,7 @@ export const UserProfile: React.FC = () => {
         ? `/api/v1/orders/track/${encodeURIComponent(userSearchQuery)}`
         : '/api/v1/orders';
 
-      const res = await fetch(url);
+      const res = await apiFetch(url);
       const json = await res.json();
 
       if (json.success && Array.isArray(json.data)) {
@@ -145,7 +146,7 @@ export const UserProfile: React.FC = () => {
 
   const handleCancelOrder = async (orderId: string) => {
     try {
-      const res = await fetch(`/api/v1/orders/${orderId}/status`, {
+      const res = await apiFetch(`/api/v1/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'Cancelled' }),

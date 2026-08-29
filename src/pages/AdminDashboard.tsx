@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import { useStore } from '../context/StoreContext';
 import { AdminOrdersView } from '../components/AdminOrdersView';
 import { Product, Category, Banner, Offer, Order, Coupon, User as UserType, ShippingRule, AdminTab } from '../types';
@@ -244,7 +245,7 @@ export const AdminDashboard: React.FC = () => {
   const handleSyncMongoDB = async () => {
     setIsSyncingMongo(true);
     try {
-      const res = await fetch('/api/v1/seed', { method: 'POST' });
+      const res = await apiFetch('/api/v1/seed', { method: 'POST' });
       const json = await res.json();
       if (json.success) {
         showToast(json.message || 'MongoDB Atlas is in sync! All custom products & Cloudinary images are preserved.', 'success');

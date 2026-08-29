@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { apiFetch } from '../utils/apiFetch';
 import { useNavigate } from 'react-router-dom';
 import { useStore } from '../context/StoreContext';
 import {
@@ -113,7 +114,7 @@ export const CheckoutPage: React.FC = () => {
         discount: Number(cartDiscount) || 0,
       };
 
-      const res = await fetch('/api/orders', {
+      const res = await apiFetch('/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
