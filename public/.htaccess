@@ -1,0 +1,27 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Serve existing static files & sitemap directly
+  RewriteRule ^sitemap\.xml$ - [L]
+  RewriteRule ^robots\.txt$ - [L]
+  RewriteRule ^llms\.txt$ - [L]
+  RewriteRule ^google.*\.html$ - [L]
+
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # Rewrite all other requests to index.html
+  RewriteRule ^ index.html [L]
+</IfModule>
+
+<FilesMatch "sitemap\.xml$">
+  ForceType application/xml
+  Header set Content-Type "application/xml; charset=utf-8"
+</FilesMatch>
+
+<FilesMatch "robots\.txt$">
+  ForceType text/plain
+  Header set Content-Type "text/plain; charset=utf-8"
+</FilesMatch>
