@@ -49,4 +49,4 @@ User-agent: CCBot
 Allow: /
 
 # Sitemaps
-Sitemap: https://mshometrends.com/sitemap.xml
+Sitemap: https://mshometrends.vercel.app/sitemap.xml
