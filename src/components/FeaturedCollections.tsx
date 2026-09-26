@@ -12,7 +12,7 @@ export const FeaturedCollections: React.FC = () => {
 
         {/* Story 1: Best Sellers (Text on Left, 4-Image Collage on Right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          
+
           {/* Left Text Column */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -31,8 +31,7 @@ export const FeaturedCollections: React.FC = () => {
             </h2>
 
             <p className="text-stone-600 font-light text-xs sm:text-base leading-relaxed max-w-md">
-              A polished 24K gold dinner set rests on a banquet table, encircled by fresh florals — a perfect blend of durability, heirloom quality, and nature for mindful cooking and hosting.
-            </p>
+              Discover our exclusive collection of premium dinner sets at MS Home Trends, where timeless elegance meets modern luxury. From everyday family meals to special celebrations, our beautifully crafted dinnerware brings sophistication, lasting quality, and a luxurious touch to every table. Explore stylish designs, elegant finishes, and premium tableware to elevate your dining experience in Pakistan.            </p>
 
             <div>
               <motion.button
@@ -78,7 +77,7 @@ export const FeaturedCollections: React.FC = () => {
             <div className="space-y-2.5 sm:space-y-4 pt-4 sm:pt-6">
               <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-md group relative h-32 sm:h-52 border border-stone-200">
                 <img
-                  src="https://images.unsplash.com/photo-1615865417236-d67f589c424d?q=80&w=600&auto=format&fit=crop"
+                  src="https://media.istockphoto.com/id/2220336705/photo/a-collection-various-drinkware-items-or-tumblr-in-blue-palette.jpg?s=2048x2048&w=is&k=20&c=pX376q7y8IIxDDt0NSEqe9GNUda_tySoVOXd6nEWwgs="
                   alt="Gold Plated Dinnerware"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
@@ -98,7 +97,7 @@ export const FeaturedCollections: React.FC = () => {
 
         {/* Story 2: New Arrival (Showcase Image on Left, Text on Right) */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center pt-4 sm:pt-8">
-          
+
           {/* Left Large Showcase Image */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -115,7 +114,7 @@ export const FeaturedCollections: React.FC = () => {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
-              
+
               {/* Floating Pill Tag */}
               <div className="absolute bottom-4 sm:bottom-6 left-4 sm:left-6 bg-white/95 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-stone-200 shadow-md">
                 <span className="text-[11px] sm:text-xs font-semibold text-[#0A3825] flex items-center gap-1.5">
