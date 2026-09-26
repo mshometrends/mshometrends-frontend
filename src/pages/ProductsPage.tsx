@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useStore } from '../context/StoreContext';
 import { ProductCard } from '../components/ProductCard';
 import { ProductGridSkeleton } from '../components/ProductSkeleton';
@@ -9,13 +9,34 @@ import { SlidersHorizontal, Search, RotateCcw, ChevronDown, Filter, X, Tag } fro
 export const ProductsPage: React.FC = () => {
   const { products, categories, isProductsLoading, selectedCategorySlug, searchQuery, setSearchQuery } = useStore();
 
+  // --- Dynamic price bounds based on actual product data ---
+  // Previously this was hardcoded to 600, which silently hid every product
+  // priced above Rs. 600 (e.g. Rs. 3,000 water bottles) because the filter
+  // logic does `p.price > priceRange` and the slider could never go higher.
+  const { minPrice, maxPrice } = useMemo(() => {
+    if (!products || products.length === 0) {
+      return { minPrice: 0, maxPrice: 1000 };
+    }
+    const prices = products.map((p) => p.price);
+    const min = Math.floor(Math.min(...prices));
+    const max = Math.ceil(Math.max(...prices));
+    return { minPrice: min, maxPrice: max };
+  }, [products]);
+
   const [search, setSearch] = useState(searchQuery || '');
   const [selectedCategory, setSelectedCategory] = useState<string>(selectedCategorySlug || 'all');
-  const [priceRange, setPriceRange] = useState<number>(600);
+  const [priceRange, setPriceRange] = useState<number>(maxPrice);
   const [selectedMaterial, setSelectedMaterial] = useState<string>('all');
   const [inStockOnly, setInStockOnly] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<'featured' | 'price-asc' | 'price-desc' | 'rating'>('featured');
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
+
+  // Keep priceRange in sync once real product data arrives/changes
+  // (e.g. products load asynchronously after initial mount).
+  React.useEffect(() => {
+    setPriceRange(maxPrice);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [maxPrice]);
 
   // Sync if searchQuery changed externally (e.g. from header search)
   React.useEffect(() => {
@@ -69,7 +90,7 @@ export const ProductsPage: React.FC = () => {
   const resetFilters = () => {
     setSearch('');
     setSelectedCategory('all');
-    setPriceRange(600);
+    setPriceRange(maxPrice);
     setSelectedMaterial('all');
     setInStockOnly(false);
     setSortBy('featured');
@@ -172,7 +193,7 @@ export const ProductsPage: React.FC = () => {
             </div>
 
             {/* Clear All Filters Button */}
-            {(search || selectedCategory !== 'all' || selectedMaterial !== 'all' || inStockOnly || priceRange < 600) && (
+            {(search || selectedCategory !== 'all' || selectedMaterial !== 'all' || inStockOnly || priceRange < maxPrice) && (
               <button
                 onClick={resetFilters}
                 className="w-full md:w-auto text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 rounded-xl font-medium transition-colors flex items-center justify-center gap-1.5 whitespace-nowrap"
@@ -291,13 +312,13 @@ export const ProductsPage: React.FC = () => {
             <div className="space-y-2 pt-2 border-t border-slate-200">
               <div className="flex justify-between items-center text-xs font-semibold">
                 <label className="text-[#0A3825]">Max Price</label>
-                <span className="text-[#B45309] font-bold">${priceRange}</span>
+                <span className="text-[#B45309] font-bold">Rs. {priceRange.toLocaleString()}</span>
               </div>
               <input
                 type="range"
-                min={30}
-                max={600}
-                step={10}
+                min={minPrice}
+                max={maxPrice}
+                step={Math.max(1, Math.round((maxPrice - minPrice) / 100) || 1)}
                 value={priceRange}
                 onChange={(e) => setPriceRange(Number(e.target.value))}
                 className="w-full accent-[#0A3825] bg-slate-200 cursor-pointer"
@@ -413,4 +434,3 @@ export const ProductsPage: React.FC = () => {
     </div>
   );
 };
-
