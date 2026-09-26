@@ -77,7 +77,7 @@ export const FeaturedCollections: React.FC = () => {
             <div className="space-y-2.5 sm:space-y-4 pt-4 sm:pt-6">
               <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-md group relative h-32 sm:h-52 border border-stone-200">
                 <img
-                  src="https://media.istockphoto.com/id/2220336705/photo/a-collection-various-drinkware-items-or-tumblr-in-blue-palette.jpg?s=2048x2048&w=is&k=20&c=pX376q7y8IIxDDt0NSEqe9GNUda_tySoVOXd6nEWwgs="
+                  src="https://images.unsplash.com/photo-1643582158005-0cd0294a89a0?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGZyZWUlMjBpbWFnZXMlMjB3YXRlciUyMGJvdHRsZXxlbnwwfHwwfHx8MA%3D%3D"
                   alt="Gold Plated Dinnerware"
                   referrerPolicy="no-referrer"
                   className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
